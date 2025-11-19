@@ -6,17 +6,10 @@ WORKDIR /app
 ENV UV_COMPILE_BYTECODE=1
 ENV UV_LINK_MODE=copy
 
-# Copy lockfile + project manifest
-COPY uv.lock pyproject.toml ./
-
-# Install dependencies AND project
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-dev
-
-# Add source code
+# Copy project files first (uv needs full source for project install)
 ADD . /app
 
-# Install project + deps again with full source
+# Install dependencies AND the project
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-dev
 
@@ -35,5 +28,4 @@ COPY --from=uv /app/.venv /app/.venv
 # Ensure executable is visible
 ENV PATH="/root/.local/bin:/app/.venv/bin:$PATH"
 
-# Start the MCP server
 ENTRYPOINT ["mcp-server-git"]
