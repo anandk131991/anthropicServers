@@ -29,6 +29,11 @@ mcp-server-git = "mcp_server_git:main"
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+# ⭐ IMPORTANT: Tell hatch that package source lives in ./src/
+# Without this, project will NOT install, causing ModuleNotFoundError.
+[tool.hatch.build]
+sources = ["src"]
+
 [tool.uv]
 dev-dependencies = ["pyright>=1.1.389", "ruff>=0.7.3", "pytest>=8.0.0"]
 
