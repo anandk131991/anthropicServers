@@ -6,10 +6,11 @@ WORKDIR /app
 ENV UV_COMPILE_BYTECODE=1
 ENV UV_LINK_MODE=copy
 
-# Copy EVERYTHING from build context (src/git)
+# Copy ONLY the git server folder
+# (Render build context is src/git)
 ADD . /app
 
-# Install dependencies AND the project (critical)
+# Install dependencies AND the project
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-dev
 
@@ -21,7 +22,6 @@ RUN apt-get update && apt-get install -y git git-lfs && rm -rf /var/lib/apt/list
 
 WORKDIR /app
 
-# Copy built environment
 COPY --from=uv /root/.local /root/.local
 COPY --from=uv /app/.venv /app/.venv
 COPY --from=uv /app /app
