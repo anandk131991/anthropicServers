@@ -28,4 +28,5 @@ COPY --from=uv /app /app
 
 ENV PATH="/root/.local/bin:/app/.venv/bin:$PATH"
 
-ENTRYPOINT ["mcp-server-git"]
+# ENTRYPOINT ["mcp-server-git"]
+ENTRYPOINT ["bash", "-c", "ls -R /app/.venv/bin && sleep 3600"]
